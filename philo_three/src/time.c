@@ -1,39 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   philo_one.c                                        :+:    :+:            */
+/*   time.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: greed <greed@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/09/07 10:14:12 by greed         #+#    #+#                 */
-/*   Updated: 2020/09/07 10:14:13 by greed         ########   odam.nl         */
+/*   Created: 2021/01/26 14:19:05 by greed         #+#    #+#                 */
+/*   Updated: 2021/01/26 14:19:06 by greed         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "philo_three.h"
+#include <sys/time.h>
 
-size_t	ft_strlen(char *str)
+unsigned long	get_time(void)
 {
-	int	i;
+	struct timeval	time;
+	unsigned long	res;
 
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
+	gettimeofday(&time, 0);
+	res = time.tv_sec * 1000;
+	res += time.tv_usec / 1000;
+	return (res);
 }
 
-void	put_error(char **message)
+unsigned long	curr_time(t_data *data)
 {
-	ft_putstr(message);
-	write("\n");
-}
-
-int		main(char **av, int ac)
-{
-	if (ac != 3)
-		put_error("Arg Structure: [# of philo | time to die | time to eat \
-			| time to sleep[number each philo must eat]");
-
+	return (get_time() - data->start_time);
 }

@@ -10,15 +10,22 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME			=	philo_one
+NAME			=	philo_two
 
 ifeq				($(shell uname), Linux)
 	CXX = gcc
 else
 	CXX = clang
 endif
-FILES			=	src/philo_one.c
-FLAGS		=	-Wall -Wextra -Werror -pedantic
+FILES			=	src/philo.c\
+					src/main.c\
+					src/threads.c\
+					src/time.c\
+					src/ultis.c\
+					src/parsing.c
+OBJ				=	$(FILES:.c=.o)
+FLAGS		=	-Wall -Wextra -Werror -O3
+INCLUDES	=	-I includes
 # COLORS
 WHITE   = \x1b[37;01m
 CYAN    = \x1b[36;01m
@@ -34,11 +41,16 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@echo "$(YELLOW)/-----	Compiling $(NAME)		-----\\ $(RESET)"
-	$(CXX) $(FILES) $(FLAGS) -o $(NAME)
+	$(CXX) $(INCLUDES) $(OBJ) $(FLAGS) -o $(NAME)
+
+%.o: %.c
+	@$(CXX) $(INCLUDES) $(FLAGS) -c $< -o $@
+
 clean:
 	@echo "$(RED)/-----	Cleaning $(NAME)		-----\\ $(RESET)"
-	rm -f $(NAME)
+	rm -f $(OBJ)
 fclean: clean
 	@echo "$(BLUE)/-----	Fcleaning $(NAME)		-----\\ $(RESET)"
+	rm -f $(NAME)
 re: fclean all
 .PHONY: all clean fclean re

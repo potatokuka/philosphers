@@ -11,44 +11,75 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <sys/time.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "philo_one.h"
 
-size_t	ft_strlen(char *str)
+void			notify(t_data *data, int id, char *note, bool unlock)
 {
-	int	i;
+	unsigned int	time;
+	char			*str_time;
+	char			*str_id;
 
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-void	ft_putstr(char *str)
-{
-	int len;
-	int	i;
-
-	i = 0;
-	len = ft_strlen(str);
-	while(i < len)
+	time = curr_time(data);
+	str_time = ultoa(time);
+	if (!str_time)
+		handle_error(data, "Error with string time");
+	str_id = ultoa(id);
+	if (!str_id)
 	{
-		write(1, str[i], 1);
-		i++;
+		free(str_time);
+		handle_error(data, "Error with string ID");
 	}
+	pthread_mutex_lock(&data->write_lock);
+	ft_putstr_fd(str_time, 1);
+	write(1, " ", 1);
+	ft_putstr_fd(str_id, 1);
+	ft_putstr_fd(note, 1);
+	if (unlock)
+		pthread_mutex_unlock(&data->write_lock);
+	free(str_time);
+	free(str_id);
 }
 
-void	put_error(char **message)
+static void		rotate_forks(t_philo *philo, pthread_mutex_t *forks, int *set)
 {
-	ft_putstr(message);
-	write(1, "\n", 1);
-	exit(1);
+	pthread_mutex_lock(&forks[set[LEFT]]);
+	notify(philo->data, philo->id, " has taken a fork\n", true);
+	pthread_mutex_lock(&forks[set[RIGHT]]);
+	notify(philo->data, philo->id, " is eating\n", true);
+	pthread_mutex_lock(&philo->eat_lock);
+	philo->num_eaten++;
+	philo->last_meal = curr_time(philo->data);
+	pthread_mutex_unlock(&philo->eat_lock);
 }
 
-int		main(int av, char **av)
+static void		leave_forks(pthread_mutex_t *forks, int *set)
 {
-	if (ac != 3)
-		put_error("Arg Structure: [# of philo | time to die | time to eat \
-			| time to sleep[number each philo must eat]");
-	return (0);
+	pthread_mutex_unlock(&forks[set[LEFT]]);
+	pthread_mutex_unlock(&forks[set[RIGHT]]);
+}
+
+void			*action(void *arg)
+{
+	t_philo	*philo;
+	int		forks[2];
+
+	philo = arg;
+	forks[LEFT] = philo->id - 1;
+	if (philo->id != philo->data->num_philo)
+		forks[RIGHT] = philo->id;
+	else
+		forks[RIGHT] = 0;
+	while (1)
+	{
+		notify(philo->data, philo->id, " is thinking\n", true);
+		rotate_forks(philo, philo->data->forks, forks);
+		usleep(philo->data->time.eat * 1000);
+		leave_forks(philo->data->forks, forks);
+		notify(philo->data, philo->id, " is sleeping\n", true);
+		usleep(philo->data->time.sleep * 1000);
+	}
+	return (NULL);
 }

@@ -57,7 +57,8 @@ dkms.conf
 .vscode
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -86,4 +87,5 @@ minishell
 day00/ex00/megaphone
 day01/ex00/horse
 Practice/attack_notes.txt
+*.json
 Practice/animal
