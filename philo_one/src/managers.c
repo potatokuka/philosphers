@@ -26,7 +26,7 @@ static int		manager(t_data *data)
 {
 	int				i;
 	unsigned int	res;
-	unsigned int	philo[2];
+	unsigned int	tmp;
 
 	while (1)
 	{
@@ -34,13 +34,12 @@ static int		manager(t_data *data)
 		while (i < data->num_philo)
 		{
 			pthread_mutex_lock(&data->philos[i].eat_lock);
-			philo[0] = data->philos[i].last_meal;
-			philo[1] = data->philos[i].num_eaten;
-			pthread_mutex_unlock(&data->philos[i].eat_lock);
-			res = curr_time(data) - philo[0];
+			tmp = data->philos[i].num_eaten;
+			res = curr_time(data) - data->philos[i].last_meal;
 			if (death(data, res, i))
 				return (1);
-			if ((int)philo[1] == data->min_meals)
+			pthread_mutex_unlock(&data->philos[i].eat_lock);
+			if ((int)tmp >= data->min_meals && data->min_meals != 0)
 				i++;
 			else
 				break ;

@@ -13,6 +13,20 @@
 #include "philo_two.h"
 #include <sys/time.h>
 
+bool			is_number(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!(str[i] >= '0' && str[i] <= '9'))
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
 unsigned long	get_time(void)
 {
 	struct timeval	time;

@@ -6,7 +6,7 @@
 /*   By: greed <greed@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/01/26 14:22:25 by greed         #+#    #+#                 */
-/*   Updated: 2021/01/26 14:22:26 by greed         ########   odam.nl         */
+/*   Updated: 2021/01/26 18:07:16 by greed         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	init_check(int ac)
 {
 	if (ac < 5 || ac > 6)
 	{
-		ft_putstr_fd(E_INPUT, 2);
+		ft_putstr_fd("Arg Structure: [# of philo | time to die | time to eat | \
+time to sleep | [number each philo must eat]\n", 2);
 		exit(1);
 	}
 	return ;

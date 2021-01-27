@@ -12,6 +12,20 @@
 
 #include "philo_three.h"
 
+bool		is_number(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!(str[i] >= '0' && str[i] <= '9'))
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
 sem_t		*init_sem(t_data *data, char *name, int val)
 {
 	sem_t	*res;

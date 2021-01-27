@@ -28,3 +28,17 @@ unsigned long	curr_time(t_data *data)
 {
 	return (get_time() - data->start_time);
 }
+
+bool			is_number(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!(str[i] >= '0' && str[i] <= '9'))
+			return (true);
+		i++;
+	}
+	return (false);
+}

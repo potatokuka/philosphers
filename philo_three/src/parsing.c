@@ -6,7 +6,7 @@
 /*   By: greed <greed@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/01/26 14:18:56 by greed         #+#    #+#                 */
-/*   Updated: 2021/01/26 14:18:57 by greed         ########   odam.nl         */
+/*   Updated: 2021/01/26 18:16:18 by greed         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,15 @@ static void	init_data(t_data *data, int ac, char **av)
 
 void		parse_input(t_data *data, int ac, char **av)
 {
+	int		i;
+
+	i = 1;
+	while (i < ac)
+	{
+		if (is_number(av[i]))
+			handle_error(data, "Not a Numeric Input");
+		i++;
+	}
 	init_data(data, ac, av);
 	data->forks = init_sem(data, "forks", data->num_philo);
 	data->write_lock = init_sem(data, "write_lock", 1);

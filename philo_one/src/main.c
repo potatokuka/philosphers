@@ -23,7 +23,7 @@ int		main(int ac, char **av)
 		handle_error(data, "Allocation of Data failed");
 	if (ac < 5 || ac > 6)
 		handle_error(data, "Arg Structure: [# of philo | time to die | \
-				time to eat | time to sleep[number each philo must eat]");
+time to eat | time to sleep[number each philo must eat]");
 	data->start_time = get_time();
 	parse_data(data, ac, av);
 	data->philos = malloc(sizeof(t_philo) * data->num_philo);

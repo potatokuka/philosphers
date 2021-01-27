@@ -24,29 +24,6 @@ static int		death(t_data *data, unsigned int res, int i)
 	return (0);
 }
 
-void			*full_stomach(void *arg)
-{
-	t_data	*data;
-	int		i;
-
-	i = 0;
-	data = arg;
-	while (i < data->num_philo)
-	{
-		sem_wait(data->full[i]);
-		i++;
-	}
-	sem_post(data->stop);
-	return (NULL);
-}
-
-void			full_tum(t_data *data)
-{
-	if (data && data->philos)
-		free(data->philos);
-	exit(0);
-}
-
 static int		manager(t_data *data)
 {
 	int				i;

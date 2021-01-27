@@ -6,7 +6,7 @@
 /*   By: greed <greed@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/01/26 14:22:28 by greed         #+#    #+#                 */
-/*   Updated: 2021/01/26 14:22:29 by greed         ########   odam.nl         */
+/*   Updated: 2021/01/26 18:22:39 by greed         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,18 @@ static void	init_data(t_data *data, int ac, char **av)
 
 void		parse_input(t_data *data, int ac, char **av)
 {
-	int	i;
+	int		i;
 
 	i = 1;
-	if (ac < 5 || ac > 7)
-		handle_error(data, E_INPUT);
+	while (i < ac)
+	{
+		if (is_number(av[i]))
+			handle_error(data, "Not a Numeric Input");
+		i++;
+	}
+	if (ac < 5 || ac > 6)
+		handle_error(data, "Arg Structure: [# of philo | time to die \
+| time to eat | time to sleep | [number each philo must eat]");
 	i = 0;
 	init_data(data, ac, av);
 	sem_unlink("forks");

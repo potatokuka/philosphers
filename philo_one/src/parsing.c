@@ -38,8 +38,9 @@ static void	init_data(t_data *data, int ac, char **av)
 	if (data->time.sleep < 60)
 		handle_error(data, "Incorrect value given for time to sleep: \
 				must be over 60");
-	if (ac == 5)
+	if (ac == 6)
 	{
+		data->min_meals = ft_atoi(av[5]);
 		if (data->min_meals < 0)
 			handle_error(data, "Negative Min Meals given: C'mon bro.");
 	}
@@ -49,6 +50,13 @@ void		parse_data(t_data *data, int ac, char **av)
 {
 	int		i;
 
+	i = 1;
+	while (i < ac)
+	{
+		if (is_number(av[i]))
+			handle_error(data, "Not a Numeric Input");
+		i++;
+	}
 	i = 0;
 	init_data(data, ac, av);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philo);
